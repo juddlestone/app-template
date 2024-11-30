@@ -57,6 +57,15 @@ resource "azurerm_storage_share" "azurerm_storage_share" {
   quota              = 10
 }
 
+resource "azurerm_container_app_environment_storage" "container_app_environment_storage" {
+  name                         = "grafana"
+  container_app_environment_id = var.container_app_environment_id
+  account_name                 = azurerm_storage_account.azurerm_storage_account.name
+  access_key                   = azurerm_storage_account.azurerm_storage_account.primary_access_key
+  access_mode                  = "ReadWrite"
+  share_name                   = "grafana"
+}
+
 resource "azurerm_user_assigned_identity" "user_assigned_identity" {
   name                = var.grafana_user_assigned_identity_name
   resource_group_name = var.resource_group_name
