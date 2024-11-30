@@ -30,6 +30,7 @@ resource "azurerm_container_app" "grafana" {
         content {
           name  = environment_variable.key
           value = environment_variable.value
+        }
       }
     }
 
