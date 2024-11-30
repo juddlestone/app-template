@@ -12,3 +12,13 @@ module "container_app_environment" {
   log_analytics_workspace_name   = var.log_analytics_workspace_name
   tags                           = var.tags
 }
+
+module "grafana" {
+  source                              = "./modules/container_grafana"
+  grafana_container_app_name          = var.grafana_container_app_name
+  grafana_user_assigned_identity_name = var.grafana_user_assigned_identity_name
+  container_app_environment_id        = module.container_app_environment.container_app_environment_id
+  location                            = var.location
+  resource_group_name                 = var.resource_group_name
+  tags                                = var.tags
+}
