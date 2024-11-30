@@ -1,3 +1,15 @@
+data "azurerm_client_config" "client_config" {
+}
+
+locals {
+  grafana_environment_variables = {
+    "GF_SECURITY_ADMIN_USER"              = "admin"
+    "GF_SECURITY_ADMIN_PASSWORD"          = var.grafana_admin_password
+    "GF_AZURE_MANAGED_IDENTITY_ENABLED"   = true
+    "GF_AZURE_MANAGED_IDENTITY_CLIENT_ID" = azurerm_user_assigned_identity.user_assigned_identity.client_id
+  }
+}
+
 resource "azurerm_container_app" "grafana" {
   name                         = var.grafana_container_app_name
   resource_group_name          = var.resource_group_name
@@ -73,4 +85,10 @@ resource "azurerm_user_assigned_identity" "user_assigned_identity" {
   resource_group_name = var.resource_group_name
   location            = var.location
   tags                = var.tags
+}
+
+resource "azurerm_role_assignment" "role_assignment" {
+  scope                = data.azurerm_client_config.client_config.subscription_id
+  role_definition_name = "Reader"
+  principal_id         = azurerm_user_assigned_identity.user_assigned_identity.principal_id
 }
