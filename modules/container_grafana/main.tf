@@ -30,11 +30,11 @@ resource "azurerm_container_app" "grafana" {
         path = "/var/lib/grafana"
       }
 
-      dynamic "environment_variable" {
+      dynamic "env" {
         for_each = local.grafana_environment_variables
         content {
-          name  = environment_variable.key
-          value = environment_variable.value
+          name  = env.key
+          value = env.value
         }
       }
     }
