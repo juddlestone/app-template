@@ -10,6 +10,25 @@ resource "azurerm_container_app" "grafana" {
       image  = "grafana/grafana-oss"
       cpu    = 0.25
       memory = "0.5Gi"
+
+      volume_mounts {
+        name = "grafana"
+        path = "/var/lib/grafana"
+      }
+    }
+
+    volume {
+      name = "grafana"
+    }
+  }
+
+  ingress {
+    target_port      = "3000"
+    external_enabled = true
+
+    traffic_weight {
+      latest_revision = true
+      percentage      = 100
     }
   }
 
