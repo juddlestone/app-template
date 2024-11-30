@@ -24,6 +24,13 @@ resource "azurerm_container_app" "grafana" {
         name = "grafana"
         path = "/var/lib/grafana"
       }
+
+      dynamic "environment_variable" {
+        for_each = local.grafana_environment_variables
+        content {
+          name  = environment_variable.key
+          value = environment_variable.value
+      }
     }
 
     volume {
@@ -53,7 +60,7 @@ resource "azurerm_container_app" "grafana" {
   lifecycle {
     replace_triggered_by = [ azurerm_container_app_environment_storage.container_app_environment_storage.id ]
   }
-  
+
   tags = var.tags
 }
 
