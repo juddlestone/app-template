@@ -1,3 +1,6 @@
+data "azurerm_subscription" "current" {
+}
+
 locals {
   grafana_environment_variables = {
     "GF_SECURITY_ADMIN_USER"              = "admin"
@@ -5,6 +8,8 @@ locals {
     "GF_AZURE_MANAGED_IDENTITY_ENABLED"   = true
     "GF_AZURE_MANAGED_IDENTITY_CLIENT_ID" = azurerm_user_assigned_identity.user_assigned_identity.client_id
   }
+
+  subscription_id = "/subsciprions/${data.azurerm_subscription.current.subscription_id}"
 }
 
 resource "azurerm_container_app" "grafana" {
@@ -97,7 +102,7 @@ resource "azurerm_user_assigned_identity" "user_assigned_identity" {
 }
 
 resource "azurerm_role_assignment" "role_assignment" {
-  scope                = var.grafana_subscription_id
+  scope                = local.subscription_id
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.user_assigned_identity.principal_id
 }
