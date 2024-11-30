@@ -2,10 +2,6 @@ variable "container_app_environment_name" {
   description = "The name of the container app environment."
 }
 
-variable "environment" {
-  description = "The name of the environment."
-}
-
 variable "grafana_container_app_name" {
   description = "The name of the grafana container app."
 }
