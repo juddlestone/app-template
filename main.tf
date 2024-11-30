@@ -19,10 +19,10 @@ module "grafana" {
   grafana_storage_account_name        = var.grafana_storage_account_name
   grafana_user_assigned_identity_name = var.grafana_user_assigned_identity_name
   grafana_admin_password              = var.grafana_admin_password
+  grafana_subscription_id             = var.grafana_subscription_id
   container_app_environment_id        = module.container_app_environment.container_app_environment_id
   log_analytics_workspace_id          = module.container_app_environment.log_analytics_workspace_id
   location                            = var.location
   resource_group_name                 = var.resource_group_name
-  subscription_id                     = var.subscription_id
   tags                                = var.tags
 }

@@ -85,7 +85,7 @@ resource "azurerm_user_assigned_identity" "user_assigned_identity" {
 }
 
 resource "azurerm_role_assignment" "role_assignment" {
-  scope                = var.subscription_id
+  scope                = var.grafana_subscription_id
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.user_assigned_identity.principal_id
 }

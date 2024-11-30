@@ -36,6 +36,6 @@ variable "grafana_user_assigned_identity_name" {
   description = "The name of the user assigned identity to be created for the grafana container."
 }
 
-variable "subscription_id" {
+variable "grafana_subscription_id" {
   description = "The subscription id needed to assign reader role."
 }
