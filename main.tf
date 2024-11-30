@@ -23,5 +23,6 @@ module "grafana" {
   log_analytics_workspace_id          = module.container_app_environment.log_analytics_workspace_id
   location                            = var.location
   resource_group_name                 = var.resource_group_name
+  subscription_id                     = var.subscription_id
   tags                                = var.tags
 }

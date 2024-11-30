@@ -1,6 +1,3 @@
-data "azurerm_client_config" "client_config" {
-}
-
 locals {
   grafana_environment_variables = {
     "GF_SECURITY_ADMIN_USER"              = "admin"
@@ -88,7 +85,7 @@ resource "azurerm_user_assigned_identity" "user_assigned_identity" {
 }
 
 resource "azurerm_role_assignment" "role_assignment" {
-  scope                = data.azurerm_client_config.client_config.subscription_id
+  scope                = var.subscription_id
   role_definition_name = "Reader"
   principal_id         = azurerm_user_assigned_identity.user_assigned_identity.principal_id
 }
