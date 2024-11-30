@@ -17,7 +17,7 @@ resource "azurerm_container_app" "grafana" {
   identity {
     type = "UserAssigned"
     identity_ids = [
-      azurerm_user_assigned_identity.grafana.id
+      azurerm_user_assigned_identity.user_assigned_identity.id
     ]
   }
 
