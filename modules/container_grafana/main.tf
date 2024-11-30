@@ -18,7 +18,7 @@ resource "azurerm_container_app" "grafana" {
     }
 
     volume {
-      name = "grafana"
+      name         = "grafana"
       storage_name = "grafana"
       storage_type = "AzureFile"
     }
