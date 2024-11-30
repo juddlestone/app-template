@@ -16,6 +16,7 @@ module "container_app_environment" {
 module "grafana" {
   source                              = "./modules/container_grafana"
   grafana_container_app_name          = var.grafana_container_app_name
+  grafana_storage_account_name        = var.grafana_storage_account_name
   grafana_user_assigned_identity_name = var.grafana_user_assigned_identity_name
   container_app_environment_id        = module.container_app_environment.container_app_environment_id
   location                            = var.location

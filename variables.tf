@@ -18,6 +18,10 @@ variable "resource_group_name" {
   description = "The name of the resource group in which the container app will be deployed."
 }
 
+variable "grafana_storage_account_name" {
+  description = "The name of the storage account to be created for the grafana container."
+}
+
 variable "tags" {
   description = "A mapping of tags to assign to the container app environment."
   type        = map(string)
