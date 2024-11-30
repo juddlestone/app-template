@@ -51,6 +51,13 @@ resource "azurerm_container_app" "grafana" {
   }
 
   tags = var.tags
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes = [
+      azurerm_container_app_environment_storage.container_app_environment_storage
+    ]
+  }
 }
 
 resource "azurerm_storage_account" "azurerm_storage_account" {
