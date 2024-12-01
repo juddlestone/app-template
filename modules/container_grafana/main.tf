@@ -106,6 +106,14 @@ resource "azurerm_container_app" "mysql" {
         name = "mysql"
         path = "/var/lib/mysql"
       }
+
+      dynamic "env" {
+        for_each = local.mysql_environment_variables
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
     }
 
     volume {
