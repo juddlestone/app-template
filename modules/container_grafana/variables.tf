@@ -6,8 +6,14 @@ variable "grafana_container_app_name" {
   description = "The name of the grafana container app."
 }
 
+variable "grafana_container_db_name" {
+  description = "The name of the grafana database container app."
+}
+
+
 variable "grafana_admin_password" {
   description = "The password for the grafana admin user."
+  sensitive   = true
 }
 
 variable "location" {

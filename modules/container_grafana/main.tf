@@ -1,6 +1,18 @@
 data "azurerm_subscription" "current" {
 }
 
+# Storage Account
+resource "azurerm_storage_account" "azurerm_storage_account" {
+  name                     = var.grafana_storage_account_name
+  resource_group_name      = var.resource_group_name
+  location                 = var.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  tags                     = var.tags
+}
+
+
+# Grafana
 resource "azurerm_container_app" "grafana" {
   name                         = var.grafana_container_app_name
   resource_group_name          = var.resource_group_name
@@ -60,22 +72,13 @@ resource "azurerm_container_app" "grafana" {
   tags = var.tags
 }
 
-resource "azurerm_storage_account" "azurerm_storage_account" {
-  name                     = var.grafana_storage_account_name
-  resource_group_name      = var.resource_group_name
-  location                 = var.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  tags                     = var.tags
-}
-
-resource "azurerm_storage_share" "azurerm_storage_share" {
+resource "azurerm_storage_share" "grafana_storage_share" {
   name               = "grafana"
   storage_account_id = azurerm_storage_account.azurerm_storage_account.id
   quota              = 10
 }
 
-resource "azurerm_container_app_environment_storage" "container_app_environment_storage" {
+resource "azurerm_container_app_environment_storage" "grafana_container_app_environment_storage" {
   name                         = "grafana"
   container_app_environment_id = var.container_app_environment_id
   account_name                 = azurerm_storage_account.azurerm_storage_account.name
@@ -84,6 +87,67 @@ resource "azurerm_container_app_environment_storage" "container_app_environment_
   share_name                   = "grafana"
 }
 
+# MySQL
+resource "azurerm_container_app" "mysql" {
+  name                         = var.grafana_container_db_name
+  resource_group_name          = var.resource_group_name
+  container_app_environment_id = var.container_app_environment_id
+  revision_mode                = "Single"
+  workload_profile_name        = "Consumption"
+
+  template {
+    container {
+      name   = var.grafana_container_db_name
+      image  = "mysql/mysql-server"
+      cpu    = 0.25
+      memory = "0.5Gi"
+
+      volume_mounts {
+        name = "mysql"
+        path = "/var/lib/mysql"
+      }
+    }
+
+    volume {
+      name         = "mysql"
+      storage_name = "mysql"
+      storage_type = "AzureFile"
+    }
+  }
+
+  ingress {
+    target_port      = "3306"
+    external_enabled = false
+
+    traffic_weight {
+      latest_revision = true
+      percentage      = 100
+    }
+  }
+
+  lifecycle {
+    replace_triggered_by = [azurerm_container_app_environment_storage.container_app_environment_storage.id]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_share" "mysql_storage_share" {
+  name               = "mysql"
+  storage_account_id = azurerm_storage_account.azurerm_storage_account.id
+  quota              = 10
+}
+
+resource "azurerm_container_app_environment_storage" "mysql_container_app_environment_storage" {
+  name                         = "mysql"
+  container_app_environment_id = var.container_app_environment_id
+  account_name                 = azurerm_storage_account.azurerm_storage_account.name
+  access_key                   = azurerm_storage_account.azurerm_storage_account.primary_access_key
+  access_mode                  = "ReadWrite"
+  share_name                   = "mysql"
+}
+
+# User Assigned Identity
 resource "azurerm_user_assigned_identity" "user_assigned_identity" {
   name                = var.grafana_user_assigned_identity_name
   resource_group_name = var.resource_group_name
