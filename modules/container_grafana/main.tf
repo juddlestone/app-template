@@ -1,9 +1,13 @@
 data "azurerm_subscription" "current" {
 }
 
+data "azurerm_resource_group" "name" {
+  name = var.azurerm_resource_group.name
+}
+
 resource "azurerm_container_app" "grafana" {
   name                         = var.grafana_container_app_name
-  resource_group_name          = var.resource_group_name
+  resource_group_name          = data.azurerm_resource_group.name
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = "Single"
   workload_profile_name        = "Consumption"
@@ -62,7 +66,7 @@ resource "azurerm_container_app" "grafana" {
 
 resource "azurerm_storage_account" "azurerm_storage_account" {
   name                     = var.grafana_storage_account_name
-  resource_group_name      = var.resource_group_name
+  resource_group_name      = data.azurerm_resource_group.name
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
@@ -86,7 +90,7 @@ resource "azurerm_container_app_environment_storage" "container_app_environment_
 
 resource "azurerm_user_assigned_identity" "user_assigned_identity" {
   name                = var.grafana_user_assigned_identity_name
-  resource_group_name = var.resource_group_name
+  resource_group_name = data.azurerm_resource_group.name
   location            = var.location
   tags                = var.tags
 }
