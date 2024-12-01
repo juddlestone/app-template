@@ -6,6 +6,7 @@ resource "azurerm_container_app" "grafana" {
   resource_group_name          = var.resource_group_name
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = "Single"
+  workload_profile_name        = "Consumption"
 
   template {
     container {
@@ -53,7 +54,7 @@ resource "azurerm_container_app" "grafana" {
   }
 
   lifecycle {
-    replace_triggered_by = [ azurerm_container_app_environment_storage.container_app_environment_storage.id ]
+    replace_triggered_by = [azurerm_container_app_environment_storage.container_app_environment_storage.id]
   }
 
   tags = var.tags
