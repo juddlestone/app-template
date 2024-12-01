@@ -10,6 +10,7 @@ module "container_app_environment" {
   resource_group_name            = azurerm_resource_group.resource_group.name
   location                       = azurerm_resource_group.resource_group.location
   log_analytics_workspace_name   = var.log_analytics_workspace_name
+  storage_account_name           = var.storage_account_name
   tags                           = var.tags
 }
 
@@ -17,7 +18,6 @@ module "grafana" {
   source                              = "./modules/container_grafana"
   grafana_container_app_name          = var.grafana_container_app_name
   grafana_container_db_name           = var.grafana_container_db_name
-  grafana_storage_account_name        = var.grafana_storage_account_name
   grafana_user_assigned_identity_name = var.grafana_user_assigned_identity_name
   grafana_admin_password              = var.grafana_admin_password
   container_app_environment_id        = module.container_app_environment.container_app_environment_id

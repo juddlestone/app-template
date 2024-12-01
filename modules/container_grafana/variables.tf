@@ -15,6 +15,10 @@ variable "grafana_admin_password" {
   sensitive   = true
 }
 
+variable "grafana_user_assigned_identity_name" {
+  description = "The name of the user assigned identity to be created for the grafana container."
+}
+
 variable "location" {
   description = "The location in which the grafana be deployed."
 }
@@ -27,7 +31,7 @@ variable "resource_group_name" {
   description = "The name of the resource group in which the grafana will be deployed."
 }
 
-variable "grafana_storage_account_name" {
+variable "storage_account_name" {
   description = "The name of the storage account to be created for the grafana container."
 }
 
@@ -37,6 +41,3 @@ variable "tags" {
   default     = {}
 }
 
-variable "grafana_user_assigned_identity_name" {
-  description = "The name of the user assigned identity to be created for the grafana container."
-}

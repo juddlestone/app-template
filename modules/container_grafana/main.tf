@@ -1,16 +1,10 @@
 data "azurerm_subscription" "current" {
 }
 
-# Storage Account
-resource "azurerm_storage_account" "azurerm_storage_account" {
-  name                     = var.grafana_storage_account_name
-  resource_group_name      = var.resource_group_name
-  location                 = var.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  tags                     = var.tags
+data "azurerm_storage_account" "storage_account" {
+  name                = var.storage_account_name
+  resource_group_name = var.resource_group_name
 }
-
 
 # Grafana
 resource "azurerm_container_app" "grafana" {
@@ -74,15 +68,15 @@ resource "azurerm_container_app" "grafana" {
 
 resource "azurerm_storage_share" "grafana_storage_share" {
   name               = "grafana"
-  storage_account_id = azurerm_storage_account.azurerm_storage_account.id
+  storage_account_id = data.azurerm_storage_account.storage_account.id
   quota              = 10
 }
 
 resource "azurerm_container_app_environment_storage" "grafana_container_app_environment_storage" {
   name                         = "grafana"
   container_app_environment_id = var.container_app_environment_id
-  account_name                 = azurerm_storage_account.azurerm_storage_account.name
-  access_key                   = azurerm_storage_account.azurerm_storage_account.primary_access_key
+  account_name                 = data.azurerm_storage_account.storage_account.name
+  access_key                   = data.azurerm_storage_account.storage_account.primary_access_key
   access_mode                  = "ReadWrite"
   share_name                   = "grafana"
 }
@@ -98,7 +92,7 @@ resource "azurerm_container_app" "mysql" {
   template {
     container {
       name   = var.grafana_container_db_name
-      image  = "mysql/lts"
+      image  = "mysql/latest"
       cpu    = 0.25
       memory = "0.5Gi"
 
@@ -142,15 +136,15 @@ resource "azurerm_container_app" "mysql" {
 
 resource "azurerm_storage_share" "mysql_storage_share" {
   name               = "mysql"
-  storage_account_id = azurerm_storage_account.azurerm_storage_account.id
+  storage_account_id = data.azurerm_storage_account.storage_account.id
   quota              = 10
 }
 
 resource "azurerm_container_app_environment_storage" "mysql_container_app_environment_storage" {
   name                         = "mysql"
   container_app_environment_id = var.container_app_environment_id
-  account_name                 = azurerm_storage_account.azurerm_storage_account.name
-  access_key                   = azurerm_storage_account.azurerm_storage_account.primary_access_key
+  account_name                 = data.azurerm_storage_account.azurerm_storage_account.name
+  access_key                   = data.azurerm_storage_account.azurerm_storage_account.primary_access_key
   access_mode                  = "ReadWrite"
   share_name                   = "mysql"
 }
