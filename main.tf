@@ -27,5 +27,5 @@ module "grafana" {
   location                            = azurerm_resource_group.resource_group.location
   tags                                = var.tags
 
-  depends_on = [ module.container_app_environment ]
+  depends_on = [module.container_app_environment]
 }
