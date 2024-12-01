@@ -143,8 +143,8 @@ resource "azurerm_storage_share" "mysql_storage_share" {
 resource "azurerm_container_app_environment_storage" "mysql_container_app_environment_storage" {
   name                         = "mysql"
   container_app_environment_id = var.container_app_environment_id
-  account_name                 = data.azurerm_storage_account.azurerm_storage_account.name
-  access_key                   = data.azurerm_storage_account.azurerm_storage_account.primary_access_key
+  account_name                 = data.azurerm_storage_account.storage_account.name
+  access_key                   = data.azurerm_storage_account.storage_account.primary_access_key
   access_mode                  = "ReadWrite"
   share_name                   = "mysql"
 }
