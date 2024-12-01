@@ -21,7 +21,7 @@ module "grafana" {
   grafana_admin_password              = var.grafana_admin_password
   container_app_environment_id        = module.container_app_environment.container_app_environment_id
   log_analytics_workspace_id          = module.container_app_environment.log_analytics_workspace_id
-  location                            = var.location
-  resource_group_name                 = var.resource_group_name
+  resource_group_name                 = azurerm_resource_group.resource_group.name
+  location                            = azurerm_resource_group.resource_group.location
   tags                                = var.tags
 }
