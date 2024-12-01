@@ -12,8 +12,8 @@ resource "azurerm_container_app" "grafana" {
     container {
       name   = var.grafana_container_app_name
       image  = "grafana/grafana-oss"
-      cpu    = 0.50
-      memory = "1.0Gi"
+      cpu    = 0.25
+      memory = "0.5Gi"
 
       volume_mounts {
         name = "grafana"
