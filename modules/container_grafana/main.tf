@@ -98,7 +98,7 @@ resource "azurerm_container_app" "mysql" {
   template {
     container {
       name   = var.grafana_container_db_name
-      image  = "mysql/mysql-server"
+      image  = "mysql/lts"
       cpu    = 0.25
       memory = "0.5Gi"
 
