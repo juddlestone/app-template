@@ -41,3 +41,15 @@ variable "tags" {
   default     = {}
 }
 
+variable "mysql_server_fqdn" {
+  description = "The fully qualified domain name of the MySQL server."
+}
+
+variable "mysql_administrator_login" {
+  description = "The administrator login for the MySQL server."
+}
+
+variable "mysql_administrator_login_password" {
+  description = "The administrator login password for the MySQL server."
+  sensitive   = true
+}

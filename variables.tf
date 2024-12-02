@@ -39,3 +39,21 @@ variable "tags" {
 variable "grafana_user_assigned_identity_name" {
   description = "The name of the user assigned identity to be created for the grafana container."
 }
+
+variable "mysql_administrator_login" {
+  description = "The administrator login for the MySQL server."
+}
+
+variable "mysql_administrator_login_password" {
+  description = "The administrator login password for the MySQL server."
+  sensitive   = true
+}
+
+variable "mysql_server_name" {
+  description = "The name of the mysql server."
+}
+
+variable "mysql_server_sku_name" {
+  description = "The sku name of the mysql server."
+  default     = "B_Standard_B1ms"
+}
