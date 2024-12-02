@@ -23,7 +23,6 @@ module "grafana" {
   location                     = azurerm_resource_group.resource_group.location
 
   grafana_container_app_name          = var.grafana_container_app_name
-  grafana_container_db_name           = var.grafana_container_db_name
   grafana_user_assigned_identity_name = var.grafana_user_assigned_identity_name
   grafana_admin_password              = var.grafana_admin_password
 
